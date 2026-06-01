@@ -1,0 +1,1262 @@
+/*
+  ============================================================
+  SISTEMA DE MATRÍCULA ACADÊMICA
+  Arquivo: style.css
+  
+  O QUE É CSS?
+  CSS (Cascading Style Sheets) é a linguagem de estilização.
+  Enquanto o HTML define a ESTRUTURA, o CSS define a APARÊNCIA:
+  cores, tamanhos, fontes, espaçamentos, animações, etc.
+  
+  SINTAXE BÁSICA DO CSS:
+  
+  seletor {
+    propriedade: valor;
+  }
+  
+  Exemplo:
+  h1 {
+    color: blue;       → cor do texto
+    font-size: 32px;   → tamanho da fonte
+  }
+  
+  TIPOS DE SELETORES:
+  .classe     → seleciona elementos com aquela classe
+  #id         → seleciona o elemento com aquele id
+  tag         → seleciona todas as tags daquele tipo
+  tag .classe → seleciona .classe DENTRO de tag
+  ============================================================
+*/
+
+
+/* ============================================================
+   1. VARIÁVEIS CSS (CUSTOM PROPERTIES)
+   Variáveis permitem definir valores reutilizáveis.
+   São declaradas no :root (elemento raiz = <html>).
+   Use var(--nome-variavel) para utilizá-las.
+   ============================================================ */
+:root {
+  /* Cores principais */
+  --primaria: #2bb53b;           /* Azul principal */
+  --primaria-escura: #ed3740;    /* Azul mais escuro (hover) */
+  --primaria-clara: #eaeff5;     /* Azul bem claro (fundo) */
+
+  --secundaria: #ed3a3d;         /* Roxo */
+  --secundaria-clara: #1b59b1;   /* Roxo claro */
+
+  --sucesso: #05b47c;            /* Verde */
+  --sucesso-clara: #e0166d;      /* Verde claro */
+
+  --alerta: #ea8006;             /* Laranja */
+  --alerta-clara: #fef3c7;       /* Laranja claro */
+
+  --perigo: #e40d0d;             /* Vermelho */
+  --perigo-clara: #fee2e2;       /* Vermelho claro */
+
+  /* Escala de cinzas */
+  --cinza-50: #f9fafb;
+  --cinza-100: #f3f4f6;
+  --cinza-200: #e5e7eb;
+  --cinza-400: #9ca3af;
+  --cinza-600: #4b5563;
+  --cinza-700: #374151;
+  --cinza-900: #111827;
+
+  /* Tipografia */
+  --fonte-principal: 'Space Grotesk', sans-serif;
+  --fonte-titulo: 'DM Serif Display', serif;
+
+  /* Espaçamentos */
+  --radius: 12px;          /* Arredondamento dos cantos */
+  --radius-grande: 20px;   /* Arredondamento maior */
+  --sombra: 0 4px 20px rgba(0, 0, 0, 0.08);  /* Sombra padrão */
+  --sombra-forte: 0 10px 40px rgba(0, 0, 0, 0.15); /* Sombra mais forte */
+
+  /* Transição padrão para animações */
+  --transicao: 0.3s ease;
+}
+
+
+/* ============================================================
+   2. RESET E ESTILOS BASE
+   O "reset" remove estilos padrão dos navegadores
+   para ter controle total sobre a aparência.
+   ============================================================ */
+
+/* * seleciona TODOS os elementos da página */
+* {
+  margin: 0;           /* Remove margens padrão */
+  padding: 0;          /* Remove espaçamentos internos padrão */
+  box-sizing: border-box; /* padding e border NÃO aumentam o tamanho do elemento */
+}
+
+body {
+  font-family: var(--fonte-principal); /* Fonte definida na variável */
+  background-color: var(--cinza-100);  /* Fundo levemente cinza */
+  color: var(--cinza-900);             /* Texto escuro por padrão */
+  line-height: 1.6;   /* Espaçamento entre linhas (160% do tamanho da fonte) */
+  min-height: 100vh;  /* Altura mínima = 100% da tela (viewport height) */
+}
+
+
+/* ============================================================
+   3. CONTROLE DE TELAS
+   O sistema tem 3 telas: login, dashboard aluno, dashboard prof.
+   Apenas a tela com classe "ativa" fica visível.
+   ============================================================ */
+
+/* Todas as .tela ficam escondidas por padrão */
+.tela {
+  display: none; /* display:none remove o elemento do fluxo visual */
+}
+
+/* Apenas a tela com classe .ativa é exibida */
+.tela.ativa {
+  display: block; /* display:block torna o elemento visível */
+}
+
+
+/* ============================================================
+   4. TELA DE LOGIN
+   Layout dividido em duas colunas: esquerda (info) e direita (form)
+   ============================================================ */
+
+/* Container principal do login */
+#tela-login {
+  /*
+    display: flex → ativa o Flexbox, sistema de layout moderno
+    O Flexbox organiza os filhos em linha ou coluna
+  */
+  display: flex;
+  min-height: 100vh; /* Ocupa toda a altura da tela */
+}
+
+/* Painel esquerdo do login (azul com informações) */
+.login-esquerda {
+  width: 45%;          /* Ocupa 45% da largura */
+  background: linear-gradient(135deg, #041617 0%, #021010 100%);
+  background-image: url(https://udi-s.sfo3.cdn.digitaloceanspaces.com/uploads/images/Sorbonne-Universit.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  /*
+    linear-gradient cria um degradê.
+    135deg → ângulo do degradê (diagonal)
+    #1a56db → cor inicial (azul)
+    #7c3aed → cor final (roxo)
+  */
+  padding: 60px 50px;   /* Espaçamento interno: 60px em cima/baixo, 50px esquerda/direita */
+  display: flex;
+  flex-direction: column; /* Organiza filhos em coluna (vertical) */
+  justify-content: center; /* Centraliza verticalmente */
+  color: rgb(25, 252, 5);
+  position: relative;    /* Necessário para posicionar elementos filhos com position:absolute */
+  overflow: hidden;      /* Esconde conteúdo que ultrapassa as bordas */
+}
+
+/* Logo e nome do sistema */
+.login-brand {
+  margin-bottom: 60px;
+}
+
+.icone-brand {
+  font-size: 3.5rem;  /* rem é relativo ao tamanho da fonte raiz (geralmente 16px) */
+  margin-bottom: 16px;
+  display: block;     /* display:block coloca o ícone em sua própria linha */
+  opacity: 0.9;
+}
+
+.nome-sistema {
+  font-family: var(--fonte-titulo);
+  font-size: 2.8rem;
+  font-weight: 400; /* peso da fonte (400 = normal, 700 = bold) */
+  letter-spacing: -0.5px; /* espaçamento entre letras */
+  margin-bottom: 8px;
+}
+
+.slogan {
+  font-size: 1rem;
+  opacity: 0.75; /* transparência (0 = invisível, 1 = opaco) */
+  letter-spacing: 1px;
+  text-transform: uppercase; /* transforma em maiúsculas */
+}
+
+/* Lista de benefícios/funcionalidades */
+.login-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* gap cria espaçamento entre os filhos no flexbox/grid */
+}
+
+.info-item {
+  display: flex;
+  align-items: center; /* alinha itens no centro vertical */
+  gap: 12px;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.info-item i {
+  font-size: 1.1rem;
+  color: #86efac; /* verde claro */
+  flex-shrink: 0; /* impede que o ícone diminua */
+}
+
+/* Círculos decorativos no fundo (efeito visual) */
+.decoracao-circulo {
+  position: absolute; /* posiciona em relação ao pai (login-esquerda) */
+  border-radius: 50%; /* torna o elemento circular */
+  background: rgba(255, 255, 255, 0.05); /* branco semi-transparente */
+}
+
+/* Círculo grande */
+.decoracao-circulo.c1 {
+  width: 350px;
+  height: 350px;
+  bottom: -100px;
+  right: -100px;
+}
+
+/* Círculo menor */
+.decoracao-circulo.c2 {
+  width: 200px;
+  height: 200px;
+  top: -60px;
+  left: -60px;
+}
+
+
+/* Painel direito do login (formulário) */
+.login-direita {
+  width: 55%;  /* Ocupa os 55% restantes */
+  display: flex;
+  align-items: center;     /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
+  padding: 40px;
+  background: white;
+}
+
+/* Card do formulário de login */
+.login-card {
+  width: 100%;
+  max-width: 440px; /* Largura máxima do card */
+}
+
+/* Seletor Aluno / Professor */
+.tipo-usuario-selector {
+  display: flex;
+  background: var(--cinza-100);
+  border-radius: var(--radius);
+  padding: 6px;
+  margin-bottom: 32px;
+  gap: 6px;
+}
+
+.btn-tipo {
+  flex: 1; /* cada botão ocupa espaço igual */
+  padding: 10px;
+  border: none; /* remove borda padrão */
+  border-radius: 8px;
+  background: transparent; /* fundo transparente */
+  color: var(--cinza-600);
+  font-family: var(--fonte-principal);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer; /* cursor de mãozinha ao passar sobre o botão */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transicao); /* animação suave ao mudar de estado */
+}
+
+/* Estado ativo do botão de tipo */
+.btn-tipo.ativo {
+  background: white;
+  color: var(--primaria);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* sombra */
+  font-weight: 600;
+}
+
+/* Título do formulário de login */
+.login-titulo {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--cinza-900);
+  margin-bottom: 8px;
+}
+
+.login-subtitulo {
+  color: var(--cinza-400);
+  font-size: 0.95rem;
+  margin-bottom: 28px;
+}
+
+
+/* ============================================================
+   5. CAMPOS DE FORMULÁRIO
+   Estilos para <label>, <input>, <select>
+   ============================================================ */
+
+/* Container de cada campo (label + input) */
+.campo-form {
+  margin-bottom: 20px;
+}
+
+/* Estilo do <label> */
+.campo-form label {
+  display: flex;    /* ícone + texto lado a lado */
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--cinza-700);
+  margin-bottom: 8px;
+}
+
+.campo-form label i {
+  color: var(--primaria);
+  font-size: 0.85rem;
+}
+
+/* Estilo dos campos <input> e <select> */
+.campo-form input,
+.campo-form select {
+  width: 100%;   /* ocupa toda a largura do pai */
+  padding: 12px 16px;
+  border: 2px solid var(--cinza-200); /* borda inicial */
+  border-radius: var(--radius);
+  font-family: var(--fonte-principal);
+  font-size: 0.95rem;
+  color: var(--cinza-900);
+  background: var(--cinza-50);
+  transition: var(--transicao);
+  outline: none; /* remove o contorno padrão do navegador */
+}
+
+/*
+  :focus é uma pseudo-classe que aplica estilos quando
+  o elemento está em foco (o usuário clicou nele ou navegou com Tab).
+*/
+.campo-form input:focus,
+.campo-form select:focus {
+  border-color: var(--primaria);
+  background: white;
+  box-shadow: 0 0 0 3px var(--primaria-clara); /* anel de foco */
+}
+
+/* Wrapper do campo de senha (input + botão de olho) */
+.input-senha-wrapper {
+  position: relative; /* para posicionar o botão do olho */
+}
+
+.input-senha-wrapper input {
+  width: 100%;
+  padding-right: 48px; /* espaço para o ícone do olho */
+}
+
+/* Botão de mostrar/ocultar senha */
+.btn-olho {
+  position: absolute; /* posiciona em relação ao wrapper */
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%); /* centraliza verticalmente */
+  background: none;
+  border: none;
+  color: var(--cinza-400);
+  cursor: pointer;
+  padding: 4px;
+  font-size: 1rem;
+  transition: color var(--transicao);
+}
+
+.btn-olho:hover {
+  color: var(--primaria);
+}
+
+/* Mensagem de erro no formulário */
+.msg-erro {
+  background: var(--perigo-clara);
+  color: var(--perigo);
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-left: 4px solid var(--perigo); /* borda colorida à esquerda */
+}
+
+/* Mensagem de sucesso */
+.msg-sucesso {
+  background: var(--sucesso-clara);
+  color: var(--sucesso);
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-left: 4px solid var(--sucesso);
+  margin-top: 16px;
+}
+
+/* Botão principal "Entrar" */
+.btn-entrar {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--primaria), var(--secundaria));
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--fonte-principal);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: var(--transicao);
+  box-shadow: 0 4px 15px rgba(26, 86, 219, 0.3);
+}
+
+/*
+  :hover é uma pseudo-classe que aplica estilos
+  quando o mouse está sobre o elemento.
+*/
+.btn-entrar:hover {
+  transform: translateY(-2px); /* sobe 2px ao passar o mouse */
+  box-shadow: 0 6px 20px rgba(26, 86, 219, 0.4);
+}
+
+/* Caixa de dica de login (para fins didáticos) */
+.dica-login {
+  margin-top: 20px;
+  padding: 16px;
+  background: var(--cinza-50);
+  border-radius: var(--radius);
+  border: 1px dashed var(--cinza-200);
+  font-size: 0.82rem;
+  color: var(--cinza-600);
+  line-height: 1.8;
+}
+
+.dica-login code {
+  background: var(--primaria-clara);
+  color: var(--primaria);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.dica-login hr {
+  border: none;
+  border-top: 1px solid var(--cinza-200);
+  margin: 8px 0;
+}
+
+
+/* ============================================================
+   6. BARRA DE NAVEGAÇÃO (NAVBAR)
+   ============================================================ */
+
+.navbar {
+  background: white;
+  padding: 0 32px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* empurra itens para as extremidades */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  position: sticky; /* fica fixo no topo ao rolar a página */
+  top: 0;
+  z-index: 100; /* empilhamento: fica acima de outros elementos */
+}
+
+/* Navbar do professor tem cor diferente */
+.navbar-prof {
+  background: linear-gradient(90deg, #1e1b4b, #4c1d95);
+  color: white;
+}
+
+.navbar-prof .navbar-brand,
+.navbar-prof .navbar-brand span,
+.navbar-prof .navbar-usuario span {
+  color: white;
+}
+
+/* Logo/nome na navbar */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--primaria);
+}
+
+.navbar-brand i {
+  font-size: 1.4rem;
+}
+
+/* Área do usuário (avatar + nome + botão sair) */
+.navbar-usuario {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--cinza-700);
+  font-weight: 500;
+}
+
+/* Avatar circular do usuário */
+.avatar-usuario {
+  width: 38px;
+  height: 38px;
+  background: var(--primaria-clara);
+  color: var(--primaria);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+/* Avatar do professor com cor diferente */
+.avatar-usuario.prof {
+  background: var(--secundaria-clara);
+  color: var(--secundaria);
+}
+
+/* Botão de sair */
+.btn-sair {
+  padding: 8px 16px;
+  background: var(--perigo-clara);
+  color: var(--perigo);
+  border: none;
+  border-radius: 8px;
+  font-family: var(--fonte-principal);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transicao);
+}
+
+.btn-sair:hover {
+  background: var(--perigo);
+  color: white;
+}
+
+
+/* ============================================================
+   7. CONTEÚDO PRINCIPAL DO DASHBOARD
+   ============================================================ */
+
+.dashboard-main {
+  max-width: 1200px;   /* largura máxima do conteúdo */
+  margin: 0 auto;      /* centraliza horizontalmente */
+  padding: 32px 24px;
+}
+
+/* Cabeçalho do dashboard */
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  flex-wrap: wrap; /* permite quebrar linha em telas menores */
+  gap: 16px;
+}
+
+.dashboard-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--cinza-900);
+  margin-bottom: 4px;
+}
+
+.dashboard-header p {
+  color: var(--cinza-400);
+  font-size: 0.95rem;
+}
+
+/* Badge de matrícula */
+.badge-matricula {
+  background: white;
+  border: 2px solid var(--primaria-clara);
+  color: var(--primaria);
+  padding: 10px 20px;
+  border-radius: 50px; /* totalmente arredondado (pílula) */
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap; /* não quebra linha */
+}
+
+.badge-matricula.prof {
+  border-color: var(--secundaria-clara);
+  color: var(--secundaria);
+}
+
+
+/* ============================================================
+   8. CARDS DE ESTATÍSTICAS
+   Organizados em grid (4 colunas)
+   ============================================================ */
+
+.cards-stats {
+  /*
+    display: grid → ativa o CSS Grid
+    grid-template-columns: repeat(4, 1fr)
+      → cria 4 colunas de tamanho igual (1fr = 1 fração)
+    gap: 20px → espaçamento entre as células
+  */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+/* Card individual */
+.stat-card {
+  background: white;
+  border-radius: var(--radius-grande);
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--sombra);
+  border-left: 4px solid; /* borda colorida à esquerda */
+  transition: var(--transicao);
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--sombra-forte);
+}
+
+/* Cores dos cards de estatísticas */
+.stat-card.azul { border-left-color: var(--primaria); }
+.stat-card.verde { border-left-color: var(--sucesso); }
+.stat-card.laranja { border-left-color: var(--alerta); }
+.stat-card.roxo { border-left-color: var(--secundaria); }
+
+/* Ícone do card */
+.stat-icone {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.stat-card.azul .stat-icone { background: var(--primaria-clara); color: var(--primaria); }
+.stat-card.verde .stat-icone { background: var(--sucesso-clara); color: var(--sucesso); }
+.stat-card.laranja .stat-icone { background: var(--alerta-clara); color: var(--alerta); }
+.stat-card.roxo .stat-icone { background: var(--secundaria-clara); color: var(--secundaria); }
+
+/* Número grande do card */
+.stat-numero {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--cinza-900);
+  line-height: 1;
+}
+
+/* Label do card */
+.stat-label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--cinza-400);
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+
+/* ============================================================
+   9. SISTEMA DE ABAS (TABS)
+   ============================================================ */
+
+.tabs-container {
+  background: white;
+  border-radius: var(--radius-grande);
+  box-shadow: var(--sombra);
+  overflow: hidden;
+}
+
+/* Menu de botões das abas */
+.tabs-menu {
+  display: flex;
+  background: var(--cinza-50);
+  border-bottom: 2px solid var(--cinza-200);
+  overflow-x: auto; /* permite rolar horizontalmente em telas pequenas */
+}
+
+/* Botão de aba individual */
+.tab-btn {
+  padding: 14px 24px;
+  background: none;
+  border: none;
+  font-family: var(--fonte-principal);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--cinza-600);
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent; /* borda invisível (espaço reservado) */
+  margin-bottom: -2px; /* compensa o border-bottom do container */
+  transition: var(--transicao);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab-btn:hover {
+  color: var(--primaria);
+  background: white;
+}
+
+/* Aba ativa */
+.tab-btn.ativa {
+  color: var(--primaria);
+  background: white;
+  border-bottom-color: var(--primaria); /* linha azul embaixo */
+  font-weight: 600;
+}
+
+/* Conteúdo de cada aba */
+.tab-conteudo {
+  display: none; /* escondido por padrão */
+  padding: 28px;
+  animation: fadeIn 0.3s ease; /* animação de entrada */
+}
+
+/* Aba ativa → visível */
+.tab-conteudo.ativa {
+  display: block;
+}
+
+/*
+  @keyframes define uma animação CSS.
+  "fadeIn" vai de opacity 0 para opacity 1 (aparece gradualmente)
+*/
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Título de seção dentro das abas */
+.secao-titulo {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--cinza-700);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.secao-titulo i {
+  color: var(--primaria);
+}
+
+
+/* ============================================================
+   10. TABELAS DE DADOS
+   ============================================================ */
+
+/* Wrapper com scroll horizontal para telas pequenas */
+.tabela-wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--cinza-200);
+}
+
+/* Tabela */
+.tabela-dados {
+  width: 100%;
+  border-collapse: collapse; /* remove espaço entre células */
+  font-size: 0.9rem;
+}
+
+/* Células do cabeçalho */
+.tabela-dados th {
+  padding: 12px 16px;
+  text-align: left; /* alinha texto à esquerda */
+  background: var(--cinza-50);
+  color: var(--cinza-600);
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--cinza-200);
+  white-space: nowrap;
+}
+
+/* Células de dados */
+.tabela-dados td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--cinza-100);
+  color: var(--cinza-700);
+  vertical-align: middle; /* alinha conteúdo no meio vertical */
+}
+
+/* Efeito hover nas linhas */
+.tabela-dados tbody tr:hover {
+  background: var(--cinza-50);
+}
+
+/* Remove borda da última linha */
+.tabela-dados tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Badges de status */
+.badge-status {
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.badge-status.aprovado { background: var(--sucesso-clara); color: var(--sucesso); }
+.badge-status.cursando { background: var(--primaria-clara); color: var(--primaria); }
+.badge-status.reprovado { background: var(--perigo-clara); color: var(--perigo); }
+.badge-status.recuperacao { background: var(--alerta-clara); color: var(--alerta); }
+
+/* Botão de ação nas tabelas */
+.btn-acao {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  font-family: var(--fonte-principal);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transicao);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-acao.cancelar {
+  background: var(--perigo-clara);
+  color: var(--perigo);
+}
+
+.btn-acao.cancelar:hover {
+  background: var(--perigo);
+  color: white;
+}
+
+.btn-acao.matricular {
+  background: var(--sucesso-clara);
+  color: var(--sucesso);
+}
+
+.btn-acao.matricular:hover {
+  background: var(--sucesso);
+  color: white;
+}
+
+
+/* ============================================================
+   11. GRID DE DISCIPLINAS DISPONÍVEIS / TURMAS
+   ============================================================ */
+
+.grid-disciplinas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  /*
+    auto-fill → cria quantas colunas couberem
+    minmax(280px, 1fr) → cada coluna tem no mínimo 280px e no máximo 1fr
+    Resultado: grid responsivo que se adapta ao tamanho da tela!
+  */
+  gap: 20px;
+}
+
+/* Card de disciplina disponível */
+.card-disciplina {
+  background: white;
+  border-radius: var(--radius-grande);
+  padding: 24px;
+  border: 2px solid var(--cinza-200);
+  transition: var(--transicao);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-disciplina:hover {
+  border-color: var(--primaria);
+  box-shadow: var(--sombra-forte);
+  transform: translateY(-3px);
+}
+
+/* Topo colorido do card */
+.card-disciplina::before {
+  /*
+    ::before é um pseudo-elemento: cria um elemento visual
+    sem precisar de HTML adicional.
+    Aqui cria uma barra colorida no topo do card.
+  */
+  content: ''; /* obrigatório para pseudo-elementos */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primaria), var(--secundaria));
+}
+
+.card-disciplina h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--cinza-900);
+  margin-bottom: 8px;
+  margin-top: 4px;
+}
+
+.card-disciplina .codigo {
+  font-size: 0.78rem;
+  color: var(--primaria);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.card-disciplina .info-linha {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--cinza-600);
+  margin-top: 8px;
+}
+
+.card-disciplina .info-linha i {
+  color: var(--cinza-400);
+  width: 14px;
+  text-align: center;
+}
+
+/* Botão no card de disciplina */
+.card-disciplina .btn-card {
+  width: 100%;
+  margin-top: 16px;
+  padding: 10px;
+  border: 2px solid var(--primaria);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--primaria);
+  font-family: var(--fonte-principal);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transicao);
+}
+
+.card-disciplina .btn-card:hover {
+  background: var(--primaria);
+  color: white;
+}
+
+.card-disciplina .btn-card:disabled {
+  border-color: var(--cinza-200);
+  color: var(--cinza-400);
+  cursor: not-allowed; /* cursor de proibido */
+  background: var(--cinza-50);
+}
+
+
+/* ============================================================
+   12. HISTÓRICO ACADÊMICO
+   ============================================================ */
+
+.historico-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.historico-card {
+  background: var(--cinza-50);
+  border-radius: var(--radius);
+  padding: 20px;
+  border: 1px solid var(--cinza-200);
+}
+
+.historico-card h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--cinza-700);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--cinza-200);
+}
+
+/* Gráfico de barras feito com CSS */
+.grafico-barras {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  height: 150px;
+  padding-top: 10px;
+}
+
+.barra-grupo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+
+.barra {
+  width: 100%;
+  background: linear-gradient(to top, var(--primaria), var(--secundaria));
+  border-radius: 4px 4px 0 0;
+  min-height: 4px;
+  /*
+    transition: height → anima a mudança de altura
+    Isso cria o efeito de "crescimento" da barra
+  */
+  transition: height 0.8s ease;
+}
+
+.barra-label {
+  font-size: 0.75rem;
+  color: var(--cinza-600);
+  font-weight: 500;
+  text-align: center;
+}
+
+.barra-valor {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--primaria);
+}
+
+/* Item do resumo do histórico */
+.resumo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--cinza-200);
+  font-size: 0.9rem;
+}
+
+.resumo-item:last-child { border-bottom: none; }
+
+.resumo-item .label { color: var(--cinza-600); }
+.resumo-item .valor { font-weight: 700; color: var(--cinza-900); }
+
+
+/* ============================================================
+   13. FORMULÁRIO DE LANÇAMENTO DE NOTAS (PROFESSOR)
+   ============================================================ */
+
+.form-notas-container {
+  max-width: 500px;
+}
+
+.form-notas {
+  background: var(--cinza-50);
+  padding: 28px;
+  border-radius: var(--radius-grande);
+  border: 1px solid var(--cinza-200);
+}
+
+
+/* ============================================================
+   14. MODAL DE CONFIRMAÇÃO
+   Janela flutuante que aparece sobre o conteúdo principal
+   ============================================================ */
+
+/* Fundo escurecido atrás do modal */
+.modal-overlay {
+  position: fixed; /* fixo na tela, independente do scroll */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* preto semi-transparente */
+  z-index: 1000; /* fica na frente de tudo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
+}
+
+/* Caixa do modal */
+.modal-box {
+  background: white;
+  border-radius: var(--radius-grande);
+  padding: 40px;
+  max-width: 440px;
+  width: 90%;
+  text-align: center;
+  box-shadow: var(--sombra-forte);
+  animation: slideUp 0.3s ease;
+}
+
+/* Animação de entrada do modal */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ícone do modal */
+.modal-icone {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+
+/* Título do modal */
+.modal-box h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--cinza-900);
+}
+
+/* Mensagem do modal */
+.modal-box p {
+  color: var(--cinza-600);
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+/* Botões do modal */
+.modal-botoes {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn-modal-cancelar {
+  padding: 12px 28px;
+  border: 2px solid var(--cinza-200);
+  border-radius: var(--radius);
+  background: white;
+  color: var(--cinza-700);
+  font-family: var(--fonte-principal);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transicao);
+}
+
+.btn-modal-cancelar:hover {
+  background: var(--cinza-100);
+}
+
+.btn-modal-confirmar {
+  padding: 12px 28px;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--perigo);
+  color: white;
+  font-family: var(--fonte-principal);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transicao);
+}
+
+.btn-modal-confirmar:hover {
+  background: #b91c1c;
+}
+
+/* Cor do botão confirmar quando for para ADICIONAR (verde) */
+.btn-modal-confirmar.positivo {
+  background: var(--sucesso);
+}
+
+.btn-modal-confirmar.positivo:hover {
+  background: #047857;
+}
+
+
+/* ============================================================
+   15. RODAPÉ
+   ============================================================ */
+
+.rodape {
+  text-align: center;
+  padding: 20px;
+  background: white;
+  color: var(--cinza-400);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--cinza-200);
+  margin-top: 40px;
+}
+
+
+/* ============================================================
+   16. RESPONSIVIDADE (MEDIA QUERIES)
+   
+   Media queries adaptam o layout para diferentes tamanhos de tela.
+   @media (max-width: 768px) → aplica regras em telas <= 768px (tablets/celulares)
+   ============================================================ */
+
+@media (max-width: 900px) {
+  /* Em telas menores, o login vira coluna única */
+  #tela-login {
+    flex-direction: column; /* empilha verticalmente */
+  }
+
+  .login-esquerda {
+    width: 100%;
+    padding: 40px 32px;
+    min-height: auto;
+  }
+
+  .login-direita {
+    width: 100%;
+    padding: 32px 20px;
+  }
+
+  /* Grid de 4 colunas vira 2 colunas */
+  .cards-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Histórico vira coluna única */
+  .historico-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Grid de stats vira coluna única */
+  .cards-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-main {
+    padding: 20px 16px;
+  }
+
+  .tab-conteudo {
+    padding: 20px 16px;
+  }
+
+  .navbar {
+    padding: 0 16px;
+  }
+
+  .navbar-brand span {
+    display: none; /* esconde o nome em telas muito pequenas */
+  }
+}

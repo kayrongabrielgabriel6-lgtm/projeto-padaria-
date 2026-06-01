@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniMatrícula — Sistema Acadêmico</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="aula.css">
+</head>
+<body>
+
+    <section id="tela-login" class="tela ativa">
+        
+        <div class="login-esquerda">
+            <div class="decoracao-circulo c1"></div>
+            <div class="decoracao-circulo c2"></div>
+            
+            <div class="login-brand">
+                <i class="fas fa-graduation-cap icone-brand"></i>
+                <h1 class="nome-sistema">UniMatrícula</h1>
+                <p class="slogan">GESTÃO ACADÊMICA INTELIGENTE</p>
+            </div>
+
+            <div class="login-info">
+                <div class="info-item"><i class="fas fa-check-circle"></i> Matrículas Online em tempo real</div>
+                <div class="info-item"><i class="fas fa-check-circle"></i> Histórico Escolar Digital</div>
+                <div class="info-item"><i class="fas fa-check-circle"></i> Painel exclusivo para Professores</div>
+            </div>
+        </div>
+
+        <div class="login-direita">
+            <div class="login-card">
+                <div class="tipo-usuario-selector">
+                    <button class="btn-tipo ativo" id="btn-tipo-aluno" onclick="setTipoUsuario('aluno')">
+                        <i class="fas fa-user-graduate"></i> Aluno
+                    </button>
+                    <button class="btn-tipo" id="btn-tipo-prof" onclick="setTipoUsuario('professor')">
+                        <i class="fas fa-chalkboard-teacher"></i> Professor
+                    </button>
+                </div>
+
+                <h2 class="login-titulo">Bem-vindo</h2>
+                <p class="login-subtitulo">Acesse sua conta para continuar</p>
+
+                <form id="form-login">
+                    <div class="campo-form">
+                        <label for="login-matricula"><i class="fas fa-id-card"></i> Matrícula</label>
+                        <input type="text" id="login-matricula" placeholder="Digite sua matrícula" required>
+                    </div>
+
+                    <div class="campo-form">
+                        <label for="login-senha"><i class="fas fa-lock"></i> Senha</label>
+                        <div class="input-senha-wrapper">
+                            <input type="password" id="login-senha" placeholder="••••••••" required>
+                            <button type="button" class="btn-olho" onclick="toggleSenha()">
+                                <i class="far fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-entrar">
+                        <span>Entrar no Sistema</span> <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+
+                </div>
+        </div>
+    </section>
+
+    <section id="dashboard" class="tela">
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <i class="fas fa-graduation-cap"></i> <span>UniMatrícula</span>
+            </div>
+            <div class="navbar-usuario">
+                <div class="avatar-usuario" id="avatar-sigla">?</div>
+                <span id="nome-usuario-display">Usuário</span>
+                <button class="btn-sair" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
+            </div>
+        </nav>
+
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <div>
+                    <h2 id="saudacao-usuario">Olá, Aluno!</h2>
+                    <p>Bem-vindo ao seu portal acadêmico.</p>
+                </div>
+            </header>
+
+            <div class="cards-stats" id="container-stats">
+                </div>
+
+            <div class="tabs-container">
+                <div class="tabs-menu" id="menu-abas">
+                    <button class="tab-btn ativa" onclick="mudarAba('matriculas', this)">
+                        <i class="fas fa-list-alt"></i> Minhas Matrículas
+                    </button>
+                    <button class="tab-btn" onclick="mudarAba('disponiveis', this)">
+                        <i class="fas fa-plus-circle"></i> Disciplinas Disponíveis
+                    </button>
+                    <button class="tab-btn" onclick="mudarAba('historico', this)">
+                        <i class="fas fa-history"></i> Histórico
+                    </button>
+                    <button id="btn-aba-cadastro" class="tab-btn" onclick="mudarAba('cadastro', this)" style="display: none;">
+                        <i class="fas fa-user-plus"></i> Novo Cadastro
+                    </button>
+                </div>
+
+                <div id="aba-conteudo-dinamico" class="tab-conteudo ativa">
+                    </div>
+            </div>
+        </main>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

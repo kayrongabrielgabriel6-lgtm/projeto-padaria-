@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: matricula_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: matricula_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: senhakr123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./banco/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - matricula_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d matricula_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: matricula_backend
+    restart: unless-stopped
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: matricula_db
+      DB_USER: admin
+      DB_PASSWORD: senhakr123
+      PORT: 3001
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - matricula_network
+
+volumes:
+  postgres_data:
+
+networks:
+  matricula_network:
+    driver: bridge
